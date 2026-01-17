@@ -63,6 +63,30 @@ Or, use your local installation `gradle {task}`
 | `bunTest`                          | `bun test`              | Executes the projects test suite                                                                                            |
 | `bunRun -PbunScript={script}`      | `bun run dev`           | Executes Bun's standard run command and allows an argument for the name of the script found in your projects `package.json` |
 
+### Task Extension
+
+You can also hook directly into the local `bun` executable by using the `BunTask` type.
+
+```groovy
+tasks.register("bunDev", BunTask) {
+    group = "bun"
+    description = "Runs the `dev` script as defined in `package.json`"
+
+    args("run", "dev")
+}
+```
+
+The `args` are any/all arguments you would normally pass to `bun`.
+
+This example results in the following:
+
+`${projectDir}/.gralde/bun/{version}/{os}/{bun} run dev`
+
+e.g. on Linux x64
+```shell
+${projectDir}/.gradle/bun/latest/bun-linux-x64/bun run dev
+```
+
 ## Supported Platforms
 
 Automatically detected:
