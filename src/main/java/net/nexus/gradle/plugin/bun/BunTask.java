@@ -103,7 +103,17 @@ public abstract class BunTask extends Exec {
     @Override
     public void exec() {
         if (bunExecutable == null) {
-            throw new IllegalStateException("bunExecutable not set (did you dependOn bunSetup?)");
+            final BunSetupTask setup = (BunSetupTask) getProject().getTasks().getByName("bunSetup");
+            final String version = BunHelpers.normalizeVersion(setup.getVersion().getOrNull());
+            final BunSystem system = setup.getSystem().get();
+            final File bunRoot = setup.getBunRootDir().get().getAsFile();
+            final File installDir = new File(bunRoot, version + File.separator + BunHelpers.stripZip(system.zipName()));
+
+            bunExecutable = BunHelpers.findBunExecutable(installDir, system.exeName()).orElse(null);
+
+            if (bunExecutable == null) {
+                throw new IllegalStateException("bunExecutable not set (did you dependOn bunSetup?)");
+            }
         }
 
         setExecutable(bunExecutable.getAbsolutePath());

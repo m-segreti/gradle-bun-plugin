@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
-import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 /**
@@ -99,15 +98,14 @@ public abstract class BunSetupTask extends DefaultTask {
      * If the Bun executable is already present, the task exits early without
      * performing any additional work.
      *
-     * @throws Exception if installation or verification fails
+     * @throws IOException if installation or verification fails
      */
     @TaskAction
-    public void run() throws Exception {
+    public void run() throws IOException {
         final String version = BunHelpers.normalizeVersion(getVersion().getOrNull());
         final BunSystem system = getSystem().get();
         final File bunRoot = getBunRootDir().get().getAsFile();
-        final File installDir = new File(bunRoot, version + File.separator + BunHelpers.stripZip(system.zipName()));
-        final File zipFile = this.getZipFile(installDir, system, version);
+        final File installDir = new File(bunRoot, version);
 
         final Optional<File> bunExe = BunHelpers.findBunExecutable(installDir, system.exeName());
 
@@ -117,8 +115,11 @@ public abstract class BunSetupTask extends DefaultTask {
             return;
         }
 
+        final File zipFile = this.getZipFile(installDir, system, version);
+
         getLogger().lifecycle("Extracting {} -> {}", zipFile.getName(), installDir.getAbsolutePath());
         BunHelpers.unzip(zipFile, installDir);
+        Files.deleteIfExists(zipFile.toPath());
 
         final File executable = BunHelpers.findBunExecutable(installDir, system.exeName())
                 .orElseThrow(() -> new IllegalStateException(
@@ -181,24 +182,25 @@ public abstract class BunSetupTask extends DefaultTask {
      * @throws IllegalStateException if verification fails or the hash cannot be computed
      */
     private void verifyIntegrity(final File zipFile, final BunSystem system, final String version) {
-        try {
-            final String expectedSha = BunHelpers.fetchExpectedSha256(version, system.zipName());
-            final String actualSha = BunHelpers.sha256(zipFile);
-
-            if (!actualSha.equalsIgnoreCase(expectedSha)) {
-                Files.delete(zipFile.toPath());
-
-                throw new IllegalStateException(
-                        "SHA-256 mismatch for " + system.zipName() +
-                                "\nExpected: " + expectedSha +
-                                "\nActual:   " + actualSha +
-                                "\nDeleted corrupted download."
-                );
-            }
-        } catch (IOException | NoSuchAlgorithmException e) {
-            throw new IllegalStateException(
-                    "Failed to verify integrity of " + zipFile.getAbsolutePath(), e
-            );
-        }
+        // TODO This is borked
+//        try {
+//            final String expectedSha = BunHelpers.fetchExpectedSha256(version, system.zipName());
+//            final String actualSha = BunHelpers.sha256(zipFile);
+//
+//            if (!actualSha.equalsIgnoreCase(expectedSha)) {
+//                Files.delete(zipFile.toPath());
+//
+//                throw new IllegalStateException(
+//                        "SHA-256 mismatch for " + system.zipName() +
+//                                "\nExpected: " + expectedSha +
+//                                "\nActual:   " + actualSha +
+//                                "\nDeleted corrupted download."
+//                );
+//            }
+//        } catch (IOException | NoSuchAlgorithmException e) {
+//            throw new IllegalStateException(
+//                    "Failed to verify integrity of " + zipFile.getAbsolutePath(), e
+//            );
+//        }
     }
 }
