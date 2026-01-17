@@ -53,13 +53,13 @@ All tasks are executed via Gradle.
 Use either the Gradlew wrapper `./gradlew {task}` <--- Recommended
 Or, use your local installation `gradle {task}`
 
-| Task                              | Bun                     | Description                                                                                                                 |
-|-----------------------------------|-------------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| `bunSetup`                        | n/a                     | Downloads and extracts the bun binaries                                                                                     |
-| `bunInstall`                      | `bun install`           | Standard installation of all depdencies from `package.json`                                                                 |
-| `bunInstallPkg -PbunPkg={package} | `bun install {package}` | Executes the standard Bun install for an individual package                                                                 |
-| `bunTest`                         | `bun test`              | Executes the projects test suite                                                                                            |
-| `bunRun -PbunScript={script}`     | `bun run dev`           | Executes Bun's standard run command and allows an argument for the name of the script found in your projects `package.json` |
+| Task                               | Bun                     | Description                                                                                                                 |
+|------------------------------------|-------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| `bunSetup`                         | n/a                     | Downloads and extracts the bun binaries                                                                                     |
+| `bunInstall`                       | `bun install`           | Standard installation of all depdencies from `package.json`                                                                 |
+| `bunInstallPkg -PbunPkg={package}` | `bun install {package}` | Executes the standard Bun install for an individual package                                                                 |
+| `bunTest`                          | `bun test`              | Executes the projects test suite                                                                                            |
+| `bunRun -PbunScript={script}`      | `bun run dev`           | Executes Bun's standard run command and allows an argument for the name of the script found in your projects `package.json` |
 
 ## Supported Platforms
 
