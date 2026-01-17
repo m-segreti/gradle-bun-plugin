@@ -5,6 +5,8 @@ A Gradle plugin that install a portable installation of the Bun JavaScript runti
 This plugin is designed for build automation and CI usage, avoiding any
 dependency on a global/system installations of Bun.
 
+https://plugins.gradle.org/u/msegreti4355
+
 ---
 
 ## Features
