@@ -1,4 +1,4 @@
-package io.gradle.m_segreti;
+package io.github.m_segreti;
 
 import java.io.*;
 import java.net.URI;

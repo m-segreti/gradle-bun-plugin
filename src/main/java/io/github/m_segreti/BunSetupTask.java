@@ -1,4 +1,4 @@
-package io.gradle.m_segreti;
+package io.github.m_segreti;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.file.DirectoryProperty;

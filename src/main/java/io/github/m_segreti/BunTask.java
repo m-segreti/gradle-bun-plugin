@@ -1,4 +1,4 @@
-package io.gradle.m_segreti;
+package io.github.m_segreti;
 
 import org.gradle.api.tasks.Exec;
 import org.gradle.api.tasks.Internal;

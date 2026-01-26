@@ -4,8 +4,8 @@ plugins {
     id 'com.gradle.plugin-publish' version '2.0.0'
 }
 
-group = 'io.gradle.m-segreti'
-version = '0.0.4'
+group = 'io.github.m-segreti'
+version = '0.0.6'
 
 repositories {
     mavenCentral()
@@ -23,8 +23,8 @@ gradlePlugin {
 
     plugins {
         create("BunPlugin") {
-            id = "io.gradle.m-segreti.BunPlugin"
-            implementationClass = "io.gradle.m_segreti.BunPlugin"
+            id = "io.github.m-segreti.bun"
+            implementationClass = "io.github.m_segreti.BunPlugin"
             displayName = 'Bun Plugin'
             description = 'Downloads and makes Bun tasks (install/test/run/add) available via Gradle'
             tags.set(["bun", "javascript", "tooling", "frontend", "build"])
