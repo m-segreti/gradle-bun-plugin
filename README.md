@@ -27,7 +27,7 @@ In your project's `build.gradle` reference the plugin:
 
 ```
 plugins {
-    id "net.nexus.bun" version "x.y.z"
+    id "io.github.m-segreti" version "x.y.z"
 }
 ```
 
