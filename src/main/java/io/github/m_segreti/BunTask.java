@@ -88,6 +88,25 @@ public abstract class BunTask extends Exec {
     }
 
     /**
+     * Sets the command-line arguments to be passed to Bun.
+     * <p>
+     * This overrides the parent {@link Exec#setArgs(List)} to ensure
+     * arguments are captured in the bunArgs list.
+     *
+     * @param args the arguments to pass to Bun
+     */
+    @Override
+    public Exec setArgs(List<String> args) {
+        bunArgs.clear();
+
+        if (args != null) {
+            bunArgs.addAll(args);
+        }
+
+        return this;
+    }
+
+    /**
      * Executes the Bun command.
      * <p>
      * This method:
@@ -118,7 +137,13 @@ public abstract class BunTask extends Exec {
 
         getLogger().lifecycle("Bun executable: [{}]", bunExecutable.getAbsolutePath());
         getLogger().lifecycle("Bun arguments : {}", bunArgs);
-        getLogger().lifecycle("Environment size: {}", getEnvironment().size());
+
+        // Add Bun to PATH for child processes - Bun itself adds its directory to PATH
+        // when running, which allows tools like Next.js to spawn bun subprocesses
+        final String bunDir = bunExecutable.getParentFile().getAbsolutePath();
+        final String currentPath = System.getenv("PATH");
+        final String pathSeparator = System.getProperty("path.separator");
+        environment("PATH", bunDir + pathSeparator + currentPath);
 
         setExecutable(bunExecutable.getAbsolutePath());
         setArgs(bunArgs);
